@@ -6,6 +6,8 @@ import time
 from flask import Flask, jsonify
 import psutil
 
+__version__ = "1.0.0"
+
 app = Flask(__name__)
 
 # Configuration
@@ -42,7 +44,8 @@ def health():
         psutil.cpu_percent(interval=0.1)
         return jsonify({
             "status": "healthy",
-            "service": "simple-monitor"
+            "service": "simple-monitor",
+            "version": __version__
         })
     except Exception as e:
         return jsonify({
@@ -178,4 +181,7 @@ def disk_io():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
+    print(f"🚀 Starting Simple Monitor on http://{HOST}:{PORT}")
+    print(f"   Health: http://{HOST}:{PORT}/health")
+    print(f"   Metrics: http://{HOST}:{PORT}/metrics")
     app.run(host=HOST, port=PORT)
